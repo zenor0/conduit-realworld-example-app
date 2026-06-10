@@ -12,6 +12,12 @@ coverage
 build
 dist
 
+# local databases
+backend/*.sqlite
+backend/*.sqlite-*
+backend/*.db
+backend/*.db-*
+
 # IDEs and editors
 .idea
 .project
