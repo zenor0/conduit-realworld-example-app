@@ -84,7 +84,7 @@ If you seeded before the backend created the current SQLite schema and articles 
 
    ```bash
    rm -f backend/database.sqlite
-   pnpm dev # wait for "Connection with development database has been established.", then stop it
+   pnpm --filter backend dev # wait for "Connection with development database has been established.", then stop it
    pnpm sqlz db:seed:all
    ```
 
