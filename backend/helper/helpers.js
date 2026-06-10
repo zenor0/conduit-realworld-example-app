@@ -17,26 +17,39 @@ const appendFavorites = async (loggedUser, article) => {
   article.dataValues.favoritesCount = favoritesCount;
 };
 
+const appendFollowerFields = async (loggedUser, user) => {
+  const following = loggedUser ? await user.hasFollower(loggedUser) : false;
+  user.dataValues.following = following;
+
+  const followersCount = await user.countFollowers();
+  user.dataValues.followersCount = followersCount;
+};
+
 const appendFollowers = async (loggedUser, toAppend) => {
-  //
-  if (toAppend?.author) {
-    const author = await toAppend.getAuthor();
+  if (!toAppend) return;
 
-    const following = await author.hasFollower(loggedUser ? loggedUser : null);
-    toAppend.author.dataValues.following = loggedUser ? following : false;
+  if (typeof toAppend.getAuthor === "function") {
+    const author =
+      toAppend.author || toAppend.get("author") || (await toAppend.getAuthor());
 
-    const followersCount = await author.countFollowers();
-    toAppend.author.dataValues.followersCount = followersCount;
-    //
-  } else {
-    const following = await toAppend.hasFollower(
-      loggedUser ? loggedUser : null,
-    );
-    toAppend.dataValues.following = loggedUser ? following : false;
+    if (!author) {
+      toAppend.dataValues.author = null;
+      return;
+    }
 
-    const followersCount = await toAppend.countFollowers();
-    toAppend.dataValues.followersCount = followersCount;
+    await appendFollowerFields(loggedUser, author);
+    toAppend.dataValues.author = author;
+    return;
   }
+
+  if (
+    typeof toAppend.hasFollower !== "function" ||
+    typeof toAppend.countFollowers !== "function"
+  ) {
+    return;
+  }
+
+  await appendFollowerFields(loggedUser, toAppend);
 };
 
 module.exports = { slugify, appendTagList, appendFavorites, appendFollowers };

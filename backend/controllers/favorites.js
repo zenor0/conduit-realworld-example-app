@@ -26,6 +26,7 @@ const favoriteToggler = async (req, res, next) => {
           model: User,
           as: "author",
           attributes: ["username", "bio", "image" /* "following" */],
+          required: true,
         },
       ],
     });

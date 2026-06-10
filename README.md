@@ -80,6 +80,14 @@ Optionally, after the backend has started once and created the tables, populate 
    pnpm sqlz db:seed:all
    ```
 
+If you seeded before the backend created the current SQLite schema and articles show up without authors, reset the local development database:
+
+   ```bash
+   rm -f backend/database.sqlite
+   pnpm dev # wait for "Connection with development database has been established.", then stop it
+   pnpm sqlz db:seed:all
+   ```
+
 ### Usage
 
 #### Development Server

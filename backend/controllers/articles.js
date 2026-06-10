@@ -15,7 +15,12 @@ const { Article, Tag, User } = require("../models");
 
 const includeOptions = [
   { model: Tag, as: "tagList", attributes: ["name"] },
-  { model: User, as: "author", attributes: { exclude: ["email"] } },
+  {
+    model: User,
+    as: "author",
+    attributes: { exclude: ["email"] },
+    required: true,
+  },
 ];
 
 //? All Articles - by Author/by Tag/Favorited by user
@@ -36,6 +41,7 @@ const allArticles = async (req, res, next) => {
           model: User,
           as: "author",
           attributes: { exclude: ["email"] },
+          required: true,
           ...(author && { where: { username: author } }),
         },
       ],

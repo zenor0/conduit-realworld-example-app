@@ -18,7 +18,12 @@ const allComments = async (req, res, next) => {
 
     const comments = await article.getComments({
       include: [
-        { model: User, as: "author", attributes: { exclude: ["email"] } },
+        {
+          model: User,
+          as: "author",
+          attributes: { exclude: ["email"] },
+          required: true,
+        },
       ],
     });
 
